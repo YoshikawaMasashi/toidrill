@@ -12,6 +12,19 @@ class App extends React.Component {
     };
   }
 
+  handleKeyDown(event) {
+    if (event.key === 'Backspace'){
+      if(this.state.answer.length > 0) {
+        var new_answer = this.state.answer.slice(0, this.state.answer.length - 1);
+        var new_state = {
+          question: this.state.question,
+          answer: new_answer
+        };
+        this.setState(new_state);
+      }
+    }
+  }
+
   handleKeyPress(event) {
     if(event.key === 'Enter'){
       console.log('enter press here! ')
@@ -39,7 +52,7 @@ class App extends React.Component {
   render() {
     var ok_idx = this.check_answer();
     return (
-      <div className="App" onKeyPress={this.handleKeyPress.bind(this)} tabIndex="0">
+      <div className="App" onKeyPress={this.handleKeyPress.bind(this)} onKeyDown={this.handleKeyDown.bind(this)} tabIndex="0">
         <div className="Question">
           <p>
             {
