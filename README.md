@@ -2,7 +2,7 @@
 
 build
 ```
-$ cd app && npm run build
+$ cd app && yarn build
 ```
 
 run
