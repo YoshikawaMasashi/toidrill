@@ -10,10 +10,15 @@
 
 .Question {
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: #cccccc;
 }
 
 .Answer {
-  font-size: calc(10px + 2vmin);
-  color: #cccccc;
+  font-size: calc(13px + 2vmin);
+  color: #999999;
+}
+
+.Done {
+  font-size: calc(13px + 2vmin);
+  color: white;
 }
