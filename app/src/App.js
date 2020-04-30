@@ -7,9 +7,27 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      correct: 0,
       question: "import numpy as np",
       answer: "",
     };
+    this.load_new_question();
+  }
+
+  load_new_question() {
+    fetch('./api/question')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        var new_state = {
+          correct: this.state.correct,
+          question: responseJson.question,
+          answer: this.state.answer,
+        };
+        this.setState(new_state);
+      })
+      .catch((error) =>{
+        console.error(error);
+      });
   }
 
   handleKeyDown(event) {
@@ -17,6 +35,7 @@ class App extends React.Component {
       if(this.state.answer.length > 0) {
         var new_answer = this.state.answer.slice(0, this.state.answer.length - 1);
         var new_state = {
+          correct: this.state.correct,
           question: this.state.question,
           answer: new_answer
         };
@@ -27,10 +46,22 @@ class App extends React.Component {
 
   handleKeyPress(event) {
     if(event.key === 'Enter'){
-      console.log('enter press here! ')
+      var new_answer = '';
+      var new_correct = this.state.correct;
+      if(this.state.question == this.state.answer){
+        new_correct += 1;
+      }
+      var new_state = {
+        correct: new_correct,
+        question: this.state.question,
+        answer: new_answer
+      };
+      this.setState(new_state);
+      this.load_new_question();
     } else {
       var new_answer = this.state.answer + `${event.key}`;
       var new_state = {
+        correct: this.state.correct,
         question: this.state.question,
         answer: new_answer
       };
@@ -65,6 +96,9 @@ class App extends React.Component {
             <font color="#ffffff">{this.state.answer.slice(0, ok_idx)}</font>
             <font color="#ff2c34">{this.state.answer.slice(ok_idx, this.state.answer.length)}</font>
             {this.state.question.slice(ok_idx, this.state.question.length)}
+          </p>
+          <p>
+            {this.state.correct}
           </p>
         </div>
       </div>
