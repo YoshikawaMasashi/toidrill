@@ -3,8 +3,8 @@ import numpy as np
 
 question_list = [
     "import numpy as np",
-    "import toid",
-    "print('debug')",
+    # "import toid",
+    # "print('debug')",
 ]
 
 app = flask.Flask(__name__, static_folder="./app/build/static", template_folder="./app/build")

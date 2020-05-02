@@ -10,6 +10,8 @@ class App extends React.Component {
       correct: 0,
       question: "import numpy as np",
       answer: "",
+      first: true,
+      start: null,
     };
     this.load_new_question();
   }
@@ -22,6 +24,8 @@ class App extends React.Component {
           correct: this.state.correct,
           question: responseJson.question,
           answer: this.state.answer,
+          first: true,
+          start: this.state.start,
         };
         this.setState(new_state);
       })
@@ -37,7 +41,9 @@ class App extends React.Component {
         var new_state = {
           correct: this.state.correct,
           question: this.state.question,
-          answer: new_answer
+          answer: new_answer,
+          first: false,
+          start: this.state.start,
         };
         this.setState(new_state);
       }
@@ -54,16 +60,24 @@ class App extends React.Component {
       var new_state = {
         correct: new_correct,
         question: this.state.question,
-        answer: new_answer
+        answer: new_answer,
+        first: false,
+        start: this.state.start,
       };
       this.setState(new_state);
       this.load_new_question();
     } else {
       var new_answer = this.state.answer + `${event.key}`;
+      var start = this.state.start;
+      if(this.state.first) {
+        start = Date.now();
+      }
       var new_state = {
         correct: this.state.correct,
         question: this.state.question,
-        answer: new_answer
+        answer: new_answer,
+        first: false,
+        start: start,
       };
       this.setState(new_state);
     }
@@ -82,6 +96,13 @@ class App extends React.Component {
 
   render() {
     var ok_idx = this.check_answer();
+
+    let time;
+    if(this.state.start != null){
+      time = Date.now() - this.state.start;
+    } else {
+      time = 0;
+    }
     return (
       <div className="App" onKeyPress={this.handleKeyPress.bind(this)} onKeyDown={this.handleKeyDown.bind(this)} tabIndex="0">
         <div className="Question">
@@ -97,8 +118,15 @@ class App extends React.Component {
             <font color="#ff2c34">{this.state.answer.slice(ok_idx, this.state.answer.length)}</font>
             {this.state.question.slice(ok_idx, this.state.question.length)}
           </p>
+        </div>
+        <div className="Done">
           <p>
             {this.state.correct}
+          </p>
+        </div>
+        <div className="Time">
+          <p>
+            {time}
           </p>
         </div>
       </div>
